@@ -1,5 +1,5 @@
 {
-  "snapshotTakenAt": "2026-05-17T20:49:38.597Z",
+  "snapshotTakenAt": "2026-05-18T02:11:53.648Z",
   "sources": [
     {
       "source": "brookline-gis",
@@ -290,7 +290,7 @@
           ]
         ]
       ],
-      "address": "53 Pearl Street",
+      "address": "67 Pearl Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -2499,7 +2499,7 @@
           ]
         ]
       ],
-      "address": "Dummer Street",
+      "address": "Saint Paul Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -2534,7 +2534,7 @@
           ]
         ]
       ],
-      "address": "Saint Paul Street",
+      "address": "Dummer Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -4284,7 +4284,7 @@
           ]
         ]
       ],
-      "address": "Kent Street",
+      "address": "Webster Place",
       "spaceCount": 1,
       "vanAccessible": true,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -5264,7 +5264,7 @@
           ]
         ]
       ],
-      "address": "10 Hart Street",
+      "address": "Hart Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -5579,7 +5579,7 @@
           ]
         ]
       ],
-      "address": "Riverdale Parkway Bikepath",
+      "address": "Riverdale Parkway Footpath",
       "spaceCount": 1,
       "vanAccessible": true,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -7189,7 +7189,7 @@
           ]
         ]
       ],
-      "address": "115 Greenough Street",
+      "address": "Tappan Street",
       "spaceCount": 1,
       "vanAccessible": true,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",

@@ -46,50 +46,34 @@ jobs:
             echo "Changes detected — will commit"
           fi
 
-      - name: Diagnostic — verify required binaries
-        if: steps.diff.outputs.changed == 'true'
-        run: |
-          echo "=== runner image info ==="
-          cat /etc/os-release | head -3 || true
-          echo ""
-          echo "=== gh ==="
-          which gh && gh --version && file $(which gh) || echo "gh: NOT EXECUTABLE OR NOT FOUND"
-          echo ""
-          echo "=== base64 ==="
-          which base64 && base64 --version | head -1 && file $(which base64) || echo "base64: NOT EXECUTABLE OR NOT FOUND"
-          echo ""
-          echo "=== shell ==="
-          echo "shell: $SHELL"
-          echo "BASH_VERSION: $BASH_VERSION"
-          echo ""
-          echo "=== file under test ==="
-          ls -la public/data/spaces.json
-          echo "size bytes: $(wc -c < public/data/spaces.json)"
-          echo ""
-          echo "=== gh auth status ==="
-          gh auth status || echo "gh auth status returned non-zero"
-
       - name: Commit and push via GitHub API
         if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Read file content and base64 encode it
-          NEW_CONTENT=$(base64 -w 0 public/data/spaces.json)
-
           # Get current SHA of the file on main (required by the contents API for updates)
           CURRENT_SHA=$(gh api repos/${{ github.repository }}/contents/public/data/spaces.json --jq '.sha')
 
           # Compose ISO date for commit message
           DATE=$(date -u +"%Y-%m-%d")
 
-          # PUT the new content. GitHub will create a signed commit by github-actions[bot].
+          # Build the JSON payload as a file (avoids ARG_MAX on the base64 content)
+          jq -n \
+            --arg message "chore: refresh spaces.json snapshot ($DATE)" \
+            --arg sha "$CURRENT_SHA" \
+            --arg branch "main" \
+            --rawfile content_file public/data/spaces.json \
+            '{
+              message: $message,
+              sha: $sha,
+              branch: $branch,
+              content: ($content_file | @base64)
+            }' > /tmp/contents_payload.json
+
+          # PUT via stdin. github-actions[bot] will be the auto-author, commit will be signed by GitHub.
           gh api \
             --method PUT \
-            repos/${{ github.repository }}/contents/public/data/spaces.json \
-            -f message="chore: refresh spaces.json snapshot ($DATE)" \
-            -f content="$NEW_CONTENT" \
-            -f sha="$CURRENT_SHA" \
-            -f branch="main"
+            --input /tmp/contents_payload.json \
+            repos/${{ github.repository }}/contents/public/data/spaces.json
 
           echo "Commit pushed via API — github-actions[bot] author, auto-signed"

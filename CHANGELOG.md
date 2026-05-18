@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented here.
 
+## [0.2.0] - 2026-05-17
+
+### Changed
+- Repository migration: renamed to accessible-parking-map, moved to mijourn account
+- Commit signing enabled (SSH)
+
 ## [Unreleased]
 
 ### Added

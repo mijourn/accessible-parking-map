@@ -46,6 +46,29 @@ jobs:
             echo "Changes detected — will commit"
           fi
 
+      - name: Diagnostic — verify required binaries
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          echo "=== runner image info ==="
+          cat /etc/os-release | head -3 || true
+          echo ""
+          echo "=== gh ==="
+          which gh && gh --version && file $(which gh) || echo "gh: NOT EXECUTABLE OR NOT FOUND"
+          echo ""
+          echo "=== base64 ==="
+          which base64 && base64 --version | head -1 && file $(which base64) || echo "base64: NOT EXECUTABLE OR NOT FOUND"
+          echo ""
+          echo "=== shell ==="
+          echo "shell: $SHELL"
+          echo "BASH_VERSION: $BASH_VERSION"
+          echo ""
+          echo "=== file under test ==="
+          ls -la public/data/spaces.json
+          echo "size bytes: $(wc -c < public/data/spaces.json)"
+          echo ""
+          echo "=== gh auth status ==="
+          gh auth status || echo "gh auth status returned non-zero"
+
       - name: Commit and push via GitHub API
         if: steps.diff.outputs.changed == 'true'
         env:

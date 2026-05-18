@@ -1,0 +1,72 @@
+name: Monthly snapshot refresh
+
+on:
+  schedule:
+    # 06:00 UTC on the 1st of each month
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Avoid overlapping refreshes if a previous run is still going
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run snapshot script
+        run: npm run snapshot
+
+      - name: Check if spaces.json changed
+        id: diff
+        run: |
+          if git diff --quiet HEAD -- public/data/spaces.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes detected — skipping commit"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Changes detected — will commit"
+          fi
+
+      - name: Commit and push via GitHub API
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Read file content and base64 encode it
+          NEW_CONTENT=$(base64 -w 0 public/data/spaces.json)
+
+          # Get current SHA of the file on main (required by the contents API for updates)
+          CURRENT_SHA=$(gh api repos/${{ github.repository }}/contents/public/data/spaces.json --jq '.sha')
+
+          # Compose ISO date for commit message
+          DATE=$(date -u +"%Y-%m-%d")
+
+          # PUT the new content. GitHub will create a signed commit by github-actions[bot].
+          gh api \
+            --method PUT \
+            repos/${{ github.repository }}/contents/public/data/spaces.json \
+            -f message="chore: refresh spaces.json snapshot ($DATE)" \
+            -f content="$NEW_CONTENT" \
+            -f sha="$CURRENT_SHA" \
+            -f branch="main"
+
+          echo "Commit pushed via API — github-actions[bot] author, auto-signed"

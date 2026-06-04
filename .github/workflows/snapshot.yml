@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 # Avoid overlapping refreshes if a previous run is still going
 concurrency:

@@ -1,5 +1,5 @@
 {
-  "snapshotTakenAt": "2026-06-01T21:09:44.813Z",
+  "snapshotTakenAt": "2026-07-01T14:02:38.040Z",
   "sources": [
     {
       "source": "brookline-gis",
@@ -990,7 +990,7 @@
           ]
         ]
       ],
-      "address": "Naples Road",
+      "address": "Harvard Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -1550,7 +1550,7 @@
           ]
         ]
       ],
-      "address": "North Brookline",
+      "address": "1824 Beacon Street",
       "spaceCount": 1,
       "vanAccessible": true,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -1865,7 +1865,7 @@
           ]
         ]
       ],
-      "address": "1383 Beacon Street",
+      "address": "1375–1393 Beacon Street",
       "spaceCount": 1,
       "vanAccessible": true,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -2499,7 +2499,7 @@
           ]
         ]
       ],
-      "address": "Saint Paul Street",
+      "address": "Dummer Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -4879,7 +4879,7 @@
           ]
         ]
       ],
-      "address": "4 Auburn Street",
+      "address": "15 Auburn Street",
       "spaceCount": 1,
       "vanAccessible": false,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
@@ -5579,7 +5579,7 @@
           ]
         ]
       ],
-      "address": "Jamaica Road",
+      "address": "Pond Avenue",
       "spaceCount": 1,
       "vanAccessible": true,
       "lastConfirmed": "2025-03-26T21:33:29.000Z",
